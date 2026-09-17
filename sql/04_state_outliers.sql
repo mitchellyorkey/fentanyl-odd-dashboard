@@ -11,7 +11,9 @@
 CREATE OR REPLACE TABLE fentanyl_deaths_state_combined AS
 SELECT
     CASE WHEN state_name = 'New York City' THEN 'New York' ELSE state_name END AS state_name,
-    month_date, year, month, SUM(deaths) AS deaths
+    month_date, year, month, SUM(deaths) AS deaths,
+    -- flag the combined row if either NY or NYC's own number was imputed
+    BOOL_OR(deaths_imputed) AS deaths_imputed
 FROM fentanyl_deaths
 WHERE state_name NOT IN ('United States', 'Puerto Rico')
 GROUP BY 1, 2, 3, 4;
@@ -26,7 +28,9 @@ SELECT
     s.year,
     s.month,
     s.deaths,
+    s.deaths_imputed,
     p.population,
+    COALESCE(p.population_imputed, FALSE) AS population_imputed,
     s.deaths / NULLIF(p.population, 0) * 100000 AS deaths_per_100k,
     AVG(s.deaths) OVER (
         PARTITION BY s.state_name ORDER BY s.month_date

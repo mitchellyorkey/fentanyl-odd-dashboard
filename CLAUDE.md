@@ -65,7 +65,10 @@ fentanyl-odd/
 
 - **VSRR data** is provisional and subject to revision.
 - **ICD-10 code T40.4** ("Synthetic opioids, excl. methadone") is the primary indicator for fentanyl-involved deaths.
-- "Outlier" state = state whose most recent month deviates from its own trailing baseline beyond a threshold (defined in `sql/04_state_outliers.sql`) — not a cross-state comparison.
+- **Every VSRR row is a "12 month-ending" total, not a single month's count** (confirmed: `SELECT DISTINCT "Period"` returns only `'12 month-ending'` — there is no monthly-only period in this dataset). `national_trend`/`regional_trend`/`state_monthly` are all trailing 12-month totals labeled by their ending month. Any chart title/axis built from these should say "12-month period ending [month]," not "monthly deaths" — and this is also why the visible decline from the 2023 peak understates the true recent-month drop (true single-month figures aren't recoverable from this data without further work — flagged as a possible future project, out of scope here).
+- "Outlier" state = state whose most recent month deviates from its own trailing baseline beyond a threshold (defined in `sql/04_state_outliers.sql`) — not a cross-state comparison. Since the underlying series is already a 12-month rolling total, this baseline is not double-smoothed further beyond that.
+- `fentanyl_deaths.deaths_imputed` and `state_population.population_imputed` flag rows where the number isn't a real reported/published value — always check these before trusting an outlier flag (e.g. Virginia's latest-month figure is a suppressed/missing raw value imputed to 5, which alone produces a z-score of -8.4; treat as a data artifact, not a real signal).
+- **State population for 2026 is imputed** (2025 pop × 2025/2024 growth rate) — Census's Vintage 2026 estimates aren't published until Dec 2026 (confirmed against census.gov's release schedule). Swap in the real figures once released; until then, `deaths_per_100k` and any 2026 outlier flagging rides on this estimate.
 - NYC has historically needed separate treatment from NY State in this data — flagged again if it recurs.
 
 ---
@@ -75,7 +78,7 @@ fentanyl-odd/
 | Area | Status |
 |---|---|
 | Repo reset / raw data untracked | ✅ Done |
-| `sql/` transform scripts | 🔄 Skeletons in place, logic pending |
-| `data/processed/` outputs | ⬜ Not yet generated |
-| Power BI dashboard | ⬜ Not started |
+| `sql/` transform scripts | ✅ All 4 run cleanly against real data |
+| `data/processed/` outputs | ✅ Generated (national/regional/state_monthly/state_outliers) |
+| Power BI dashboard | ⬜ Not started — next milestone |
 | Archived EDA / hypothesis testing | ⏸ Paused, preserved in `archive/eda-v1/` |

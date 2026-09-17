@@ -31,6 +31,10 @@ SELECT
     -- Imputed as midpoint (5): unbiased if suppressed values are ~uniform
     -- across 1-9; any single row could still be off by up to +/-4.
     COALESCE(CAST(REPLACE("Data Value", ',', '') AS DOUBLE), 5) AS deaths,
+    -- Flag so anything downstream (esp. z-score outlier flagging) can tell
+    -- a real value from an imputed one - a suppressed/missing row hitting
+    -- the imputed 5 next to a normal baseline reads as a huge fake z-score.
+    "Data Value" IS NULL                AS deaths_imputed,
     "Percent Complete"               AS percent_complete
 FROM vsrr_raw
 WHERE "Indicator" = 'Synthetic opioids, excl. methadone (T40.4)';
@@ -46,7 +50,7 @@ WHERE "Indicator" = 'Synthetic opioids, excl. methadone (T40.4)';
 -- consistent filter across both files (arrives as VARCHAR in the 2010-2020 file,
 -- differently typed in the other - cast forces both to match).
 CREATE OR REPLACE TABLE state_population AS
-SELECT state_name, CAST(REPLACE(year_col, 'POPESTIMATE', '') AS INTEGER) AS year, population
+SELECT state_name, CAST(REPLACE(year_col, 'POPESTIMATE', '') AS INTEGER) AS year, population, FALSE AS population_imputed
 FROM (
     UNPIVOT (
         SELECT "NAME" AS state_name,
@@ -62,7 +66,7 @@ FROM (
 
 UNION ALL
 
-SELECT state_name, CAST(REPLACE(year_col, 'POPESTIMATE', '') AS INTEGER) AS year, population
+SELECT state_name, CAST(REPLACE(year_col, 'POPESTIMATE', '') AS INTEGER) AS year, population, FALSE AS population_imputed
 FROM (
     UNPIVOT (
         SELECT "NAME" AS state_name,
@@ -73,7 +77,26 @@ FROM (
     )
     ON COLUMNS('POPESTIMATE.*')
     INTO NAME year_col VALUE population
-);
+)
+
+UNION ALL
+
+-- 2026 has no official Census estimate yet (Vintage 2026 isn't published
+-- until Dec 2026 - confirmed against census.gov's release schedule). VSRR
+-- data already runs into 2026, so without this the per-capita/outlier
+-- calcs would just go blank for the newest, most-relevant months.
+-- Imputed as: 2025 population x (2025/2024 growth rate) - i.e. carrying
+-- each state's most recent observed YoY growth forward one year. Simple
+-- and directionally fine for a monitoring dashboard, but it IS a guess -
+-- population_imputed flags it downstream, and swap in the real Vintage
+-- 2026 figures once released (due Dec 2026).
+SELECT
+    "NAME" AS state_name,
+    2026 AS year,
+    ROUND(POPESTIMATE2025 * (POPESTIMATE2025 / NULLIF(POPESTIMATE2024, 0))) AS population,
+    TRUE AS population_imputed
+FROM read_csv_auto('data/raw/NST-EST2025-ALLDATA.csv')
+WHERE TRY_CAST("SUMLEV" AS INTEGER) = 40;
 
 -- separate lookup for region
 -- Sourced from the newer Census file

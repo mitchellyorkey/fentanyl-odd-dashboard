@@ -22,3 +22,9 @@ After re-running the `sql/` scripts, open the .pbix and click Refresh (Home tab)
 1. **National** — single trend line, peak vs. current callout
 2. **Regional** — small multiples or one chart with region as a legend/slicer
 3. **State outliers** — table of currently-flagged states (from `state_outliers.csv`) + a state-level drilldown chart (from `state_monthly.csv`)
+
+## Caveats to carry into the dashboard (see CLAUDE.md for detail)
+
+- Every trend value is a **12-month period ending [month]**, not a single month's count — label chart titles/axes accordingly, don't call it "monthly deaths."
+- `state_outliers.csv` / `state_monthly.csv` carry `deaths_imputed` and `population_imputed` flags — filter or visually mark rows where either is true before treating a flagged state as a real signal.
+- As of the latest run, every currently-flagged state is a *decline* relative to its own baseline (not a rebound) once the Virginia data-artifact row is excluded.
