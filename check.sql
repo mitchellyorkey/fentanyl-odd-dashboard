@@ -1,0 +1,1 @@
+DESCRIBE SELECT * FROM read_csv_auto('data/raw/NST-EST2020-ALLDATA.csv');
