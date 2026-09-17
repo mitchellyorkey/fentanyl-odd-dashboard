@@ -1,0 +1,19 @@
+# secrets
+.env
+
+# raw data - downloaded manually per README, never committed
+data/raw/*
+!data/raw/.gitkeep
+
+# local DuckDB database file - rebuilt from sql/ scripts
+*.duckdb
+*.duckdb.wal
+
+# notebook/python noise
+.ipynb_checkpoints/
+__pycache__/
+*.pyc
+
+# OS
+.DS_Store
+Thumbs.db
