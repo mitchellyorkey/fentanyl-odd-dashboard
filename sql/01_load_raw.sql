@@ -57,7 +57,7 @@ FROM (
                POPESTIMATE2010, POPESTIMATE2011, POPESTIMATE2012, POPESTIMATE2013,
                POPESTIMATE2014, POPESTIMATE2015, POPESTIMATE2016, POPESTIMATE2017,
                POPESTIMATE2018, POPESTIMATE2019
-        FROM read_csv_auto('data/raw/NST-EST2020-ALLDATA.csv')
+        FROM read_csv_auto('data/seeds/NST-EST2020-ALLDATA.csv')
         WHERE TRY_CAST("SUMLEV" AS INTEGER) = 40
     )
     ON COLUMNS('POPESTIMATE.*')
@@ -72,7 +72,7 @@ FROM (
         SELECT "NAME" AS state_name,
                POPESTIMATE2020, POPESTIMATE2021, POPESTIMATE2022, POPESTIMATE2023,
                POPESTIMATE2024, POPESTIMATE2025
-        FROM read_csv_auto('data/raw/NST-EST2025-ALLDATA.csv')
+        FROM read_csv_auto('data/seeds/NST-EST2025-ALLDATA.csv')
         WHERE TRY_CAST("SUMLEV" AS INTEGER) = 40
     )
     ON COLUMNS('POPESTIMATE.*')
@@ -95,7 +95,7 @@ SELECT
     2026 AS year,
     ROUND(POPESTIMATE2025 * (POPESTIMATE2025 / NULLIF(POPESTIMATE2024, 0))) AS population,
     TRUE AS population_imputed
-FROM read_csv_auto('data/raw/NST-EST2025-ALLDATA.csv')
+FROM read_csv_auto('data/seeds/NST-EST2025-ALLDATA.csv')
 WHERE TRY_CAST("SUMLEV" AS INTEGER) = 40;
 
 -- separate lookup for region
@@ -103,5 +103,5 @@ WHERE TRY_CAST("SUMLEV" AS INTEGER) = 40;
 -- region codes don't change between vintages.
 CREATE OR REPLACE TABLE state_region AS
 SELECT DISTINCT "NAME" AS state_name, TRY_CAST("REGION" AS INTEGER) AS census_region_code
-FROM read_csv_auto('data/raw/NST-EST2025-ALLDATA.csv')
+FROM read_csv_auto('data/seeds/NST-EST2025-ALLDATA.csv')
 WHERE TRY_CAST("SUMLEV" AS INTEGER) = 40;
