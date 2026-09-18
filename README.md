@@ -1,6 +1,6 @@
 # fentanyl-odd
 
-Monitoring dashboard for US fentanyl / synthetic opioid overdose deaths — national, regional, and state-level trends, with recent state-level outliers flagged.
+Monitoring dashboard for US fentanyl / synthetic opioid overdose deaths: national, regional, and state-level trends, with recent state-level outliers flagged.
 
 Earlier exploratory work (multi-source hypothesis testing against the Vangelov et al. 2026 supply-shock paper) is archived in `archive/eda-v1/` and continues as a separate research track, not part of this dashboard.
 
@@ -10,10 +10,10 @@ Earlier exploratory work (multi-source hypothesis testing against the Vangelov e
 data/raw/  ->  sql/  (DuckDB)  ->  data/processed/  ->  dashboard/  (Power BI)
 ```
 
-1. **Download raw data manually** (see Data Sources below) into `data/raw/`. Not committed — see `.gitignore`.
-2. **Transform with DuckDB SQL** — run the scripts in `sql/` in order against a local `.duckdb` file. See `sql/README.md`.
-3. **Processed output** lands in `data/processed/` as small CSV/Parquet files — these ARE committed, since they're what the dashboard reads and they're too small to matter.
-4. **Dashboard** — Power BI Desktop (free) reads directly from `data/processed/`. See `dashboard/README.md`.
+1. **Download raw data manually** (see Data Sources below) into `data/raw/`. Not committed, see `.gitignore`.
+2. **Transform with DuckDB SQL**. Run the scripts in `sql/` in order against a local `.duckdb` file. See `sql/README.md`.
+3. **Processed output** lands in `data/processed/` as small CSV/Parquet files. These ARE committed, since they're what the dashboard reads and they're too small to matter.
+4. **Dashboard**. Power BI Desktop (free) reads directly from `data/processed/`. See `dashboard/README.md`.
 
 ## Data Sources
 
