@@ -1,6 +1,6 @@
 # sql/
 
-DuckDB transform scripts, run in numeric order against a local `fentanyl.duckdb` file (gitignored — rebuild anytime by re-running these scripts from scratch).
+DuckDB transform scripts, run in numeric order against a local `fentanyl.duckdb` file (gitignored - rebuild anytime by re-running these scripts from scratch).
 
 ## Run
 
