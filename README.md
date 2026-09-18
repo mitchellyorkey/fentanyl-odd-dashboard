@@ -34,7 +34,7 @@ Requires the DuckDB CLI or Python `duckdb` package, and Power BI Desktop for the
 
 ## Scope
 
-This repo is intentionally narrow: descriptive monitoring only (trend + outlier detection). Causal/hypothesis-testing work (supply shock, treatment access, seizure correlation) lives in the archived EDA and any future research-track repo, not here — a dashboard is the wrong shape for that kind of analysis.
+This repo is intentionally narrow: descriptive monitoring only (trend + outlier detection). Causal/hypothesis-testing work (supply shock, treatment access, seizure correlation) lives in the archived EDA and any future research-track repo.
 
 ## References
 
