@@ -1,0 +1,56 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "ca5aacafe8b8ce41515d",
+  "displayName": "State",
+  "displayOption": "FitToPage",
+  "height": 1080,
+  "width": 1920,
+  "pageBinding": {
+    "name": "44f69f6fa502c502830c",
+    "type": "Default",
+    "parameters": [],
+    "acceptsFilterContext": "None"
+  },
+  "objects": {
+    "outspacePane": [
+      {
+        "properties": {
+          "width": {
+            "expr": {
+              "Literal": {
+                "Value": "183L"
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "visualInteractions": [
+    {
+      "source": "f38e03aa7580b917e9c9",
+      "target": "2a2fa621bcd263b3122e",
+      "type": "DataFilter"
+    },
+    {
+      "source": "2a2fa621bcd263b3122e",
+      "target": "f38e03aa7580b917e9c9",
+      "type": "DataFilter"
+    },
+    {
+      "source": "fa7352a946b22e21e004",
+      "target": "fea9cf1ed2a34caea26a",
+      "type": "NoFilter"
+    },
+    {
+      "source": "f38e03aa7580b917e9c9",
+      "target": "fea9cf1ed2a34caea26a",
+      "type": "DataFilter"
+    },
+    {
+      "source": "f38e03aa7580b917e9c9",
+      "target": "fa7352a946b22e21e004",
+      "type": "DataFilter"
+    }
+  ]
+}

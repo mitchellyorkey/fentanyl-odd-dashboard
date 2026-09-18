@@ -1,0 +1,45 @@
+table DateTable
+	lineageTag: 15a70e27-5a21-4bf8-8e61-eed68e16b064
+	dataCategory: Time
+
+	measure LatestDateValue = MAX(DateTable[Date])
+		formatString: General Date
+		lineageTag: c07b6158-2711-467f-85ad-2da686f388ec
+
+	column Date
+		isKey
+		formatString: General Date
+		lineageTag: 695ec7f6-4b22-4837-aafe-c31226230562
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Date]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year = YEAR(DateTable[Date])
+		formatString: 0
+		lineageTag: 9c34980a-f850-4eb6-87de-2f9dfb69e8d7
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthName = FORMAT(DateTable[Date], "MMM YYYY")
+		lineageTag: 8ead3656-95d9-442b-867a-f48663e0bbd1
+		summarizeBy: none
+		sortByColumn: MonthSortKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthSortKey = YEAR(DateTable[Date]) * 100 + MONTH(DateTable[Date])
+		formatString: 0
+		lineageTag: dafe154f-b135-4747-8839-88e4af888b0e
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DateTable = calculated
+		mode: import
+		source = CALENDAR(MIN(national_trend[month_date]), MAX(national_trend[month_date]))
+
+	annotation PBI_Id = a89446f5506f4e7a9a1019ce86cd2998
+

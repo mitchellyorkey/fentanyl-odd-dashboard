@@ -1,0 +1,141 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "4cbc439fd838937027b2",
+  "position": {
+    "x": 1153.3333333333333,
+    "y": 74.444444444444443,
+    "z": 3002,
+    "height": 490,
+    "width": 754.44444444444446,
+    "tabOrder": 3002
+  },
+  "visual": {
+    "visualType": "pieChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "regional_trend"
+                    }
+                  },
+                  "Property": "region_name"
+                }
+              },
+              "queryRef": "regional_trend.region_name",
+              "nativeQueryRef": "region_name",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "regional_trend"
+                    }
+                  },
+                  "Property": "Peak Regional Deaths"
+                }
+              },
+              "queryRef": "regional_trend.Peak Regional Deaths",
+              "nativeQueryRef": "Peak Regional Deaths"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "regional_trend"
+                  }
+                },
+                "Property": "region_name"
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "regional_trend"
+                    }
+                  },
+                  "Property": "Peak Regional Title"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "6591b44c130134b23358",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "regional_trend"
+              }
+            },
+            "Property": "region_name"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "3378784c934170e0e622",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "DateTable"
+              }
+            },
+            "Property": "LatestDateValue"
+          }
+        },
+        "type": "Advanced",
+        "howCreated": "User"
+      },
+      {
+        "name": "65d4cbf630e3031203ca",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "regional_trend"
+              }
+            },
+            "Property": "Peak Regional Deaths"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}

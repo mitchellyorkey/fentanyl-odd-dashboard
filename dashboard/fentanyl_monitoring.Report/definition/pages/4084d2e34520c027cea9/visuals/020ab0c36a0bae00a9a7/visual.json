@@ -1,0 +1,75 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "020ab0c36a0bae00a9a7",
+  "position": {
+    "x": 702.85714285714289,
+    "y": 8.5714285714285712,
+    "z": 2000,
+    "height": 60.000000000000007,
+    "width": 201.42857142857144,
+    "tabOrder": 2000
+  },
+  "visual": {
+    "visualType": "cardVisual",
+    "query": {
+      "queryState": {
+        "Data": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "national_trend"
+                    }
+                  },
+                  "Property": "Current Total"
+                }
+              },
+              "queryRef": "national_trend.Current Total",
+              "nativeQueryRef": "Current 12-mo Total",
+              "displayName": "Current 12-mo Total"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "national_trend"
+                  }
+                },
+                "Property": "Current Total"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "abb22464bcccbae0744c",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "national_trend"
+              }
+            },
+            "Property": "Current Total"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}

@@ -1,0 +1,141 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "f729c2e5eb08ee50e861",
+  "position": {
+    "x": 1153.3333333333333,
+    "y": 580,
+    "z": 3003,
+    "height": 490,
+    "width": 754.44444444444446,
+    "tabOrder": 3003
+  },
+  "visual": {
+    "visualType": "pieChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "regional_trend"
+                    }
+                  },
+                  "Property": "region_name"
+                }
+              },
+              "queryRef": "regional_trend.region_name",
+              "nativeQueryRef": "region_name",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "regional_trend"
+                    }
+                  },
+                  "Property": "Latest Regional Deaths"
+                }
+              },
+              "queryRef": "regional_trend.Latest Regional Deaths",
+              "nativeQueryRef": "Latest Regional Deaths"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "regional_trend"
+                  }
+                },
+                "Property": "region_name"
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "regional_trend"
+                    }
+                  },
+                  "Property": "Latest Regional Title"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "3378784c934170e0e622",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "DateTable"
+              }
+            },
+            "Property": "LatestDateValue"
+          }
+        },
+        "type": "Advanced",
+        "howCreated": "User"
+      },
+      {
+        "name": "83fe005400a64b7670e4",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "regional_trend"
+              }
+            },
+            "Property": "region_name"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "9bd33ae35793d007db81",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "regional_trend"
+              }
+            },
+            "Property": "Latest Regional Deaths"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}

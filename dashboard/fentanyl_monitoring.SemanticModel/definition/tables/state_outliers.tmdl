@@ -1,0 +1,132 @@
+table state_outliers
+	lineageTag: 7af4c9d0-e270-4409-969b-879f82599e09
+
+	column state_name
+		dataType: string
+		lineageTag: 6fa7358b-8cb1-4aca-b724-93c2967886c4
+		dataCategory: StateOrProvince
+		summarizeBy: none
+		sourceColumn: state_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column month_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 25ecdc41-4c95-40f0-a3a2-a4cd32a328e5
+		summarizeBy: none
+		sourceColumn: month_date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column year
+		dataType: int64
+		formatString: 0
+		lineageTag: 38c47841-8b00-48a8-a6a0-e6ec94d47684
+		summarizeBy: sum
+		sourceColumn: year
+
+		annotation SummarizationSetBy = Automatic
+
+	column month
+		dataType: string
+		lineageTag: 51fb439d-3f9d-43d6-9a82-52255b1e68aa
+		summarizeBy: none
+		sourceColumn: month
+
+		annotation SummarizationSetBy = Automatic
+
+	column deaths
+		dataType: double
+		lineageTag: 7e9027cc-a525-4756-ae95-eca490325525
+		summarizeBy: sum
+		sourceColumn: deaths
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column deaths_imputed
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 225e469f-d174-402a-8a00-cf11ef02c1cd
+		summarizeBy: none
+		sourceColumn: deaths_imputed
+
+		annotation SummarizationSetBy = Automatic
+
+	column population
+		dataType: double
+		lineageTag: c04f52e4-f2d1-4a4b-9eb3-63a0c362b98f
+		summarizeBy: sum
+		sourceColumn: population
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column population_imputed
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: ecb7d975-314a-444b-afb9-cfc81f7ae6af
+		summarizeBy: none
+		sourceColumn: population_imputed
+
+		annotation SummarizationSetBy = Automatic
+
+	column deaths_per_100k
+		dataType: double
+		lineageTag: 39d71613-a0a3-4d00-ada8-9c3b77053689
+		summarizeBy: sum
+		sourceColumn: deaths_per_100k
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column trailing_avg
+		dataType: double
+		lineageTag: 65df50e4-cb91-4f0d-a4cd-23a7a9b63842
+		summarizeBy: sum
+		sourceColumn: trailing_avg
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column trailing_stddev
+		dataType: double
+		lineageTag: b78f020c-c716-4214-bd90-97a2e7eea4e1
+		summarizeBy: sum
+		sourceColumn: trailing_stddev
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column z_score
+		dataType: double
+		lineageTag: e9821890-280b-4c6d-9784-f399b809e3a8
+		summarizeBy: sum
+		sourceColumn: z_score
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition state_outliers = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\Mitch\Documents\fentanyl-odd-v2\data\processed\state_outliers.csv"),[Delimiter=",", Columns=12, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"state_name", type text}, {"month_date", type date}, {"year", Int64.Type}, {"month", type text}, {"deaths", type number}, {"deaths_imputed", type logical}, {"population", type number}, {"population_imputed", type logical}, {"deaths_per_100k", type number}, {"trailing_avg", type number}, {"trailing_stddev", type number}, {"z_score", type number}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

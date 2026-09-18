@@ -1,0 +1,82 @@
+table national_trend
+	lineageTag: c0afe574-239b-4438-bdd5-090b0c741bb9
+
+	measure 'Peak Total' = MAX(national_trend[total_deaths])
+		lineageTag: 3ea88591-a3c5-4b2e-a1a1-9a01f21e8e90
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Current Total' = CALCULATE(SUM(national_trend[total_deaths]), national_trend[month_date] = MAX(national_trend[month_date]))
+		lineageTag: 3c9fc6be-ba9b-4b0f-a9a3-1d44b3661ef3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'National Chart Title' = "National Trend - 12-Month Rolling Total Deaths, Ending " & FORMAT(CALCULATE(MAX(national_trend[month_date]), ALL(national_trend)), "MMMM YYYY")
+		lineageTag: cff7e08a-0776-4f96-abb2-833c0a67d3a0
+
+	measure 'Peak Month Date' = CALCULATE(MAX(national_trend[month_date]), TOPN(1, ALL(national_trend), national_trend[total_deaths], DESC))
+		formatString: General Date
+		lineageTag: 312de752-ccce-4b8c-8ce9-4d29e3f48558
+
+	column month_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: f85b1a25-4563-44de-bcac-3089f0e1c621
+		summarizeBy: none
+		sourceColumn: month_date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column year
+		dataType: int64
+		formatString: 0
+		lineageTag: e246e3a9-4735-47aa-a944-97ea0f70b16a
+		summarizeBy: sum
+		sourceColumn: year
+
+		annotation SummarizationSetBy = Automatic
+
+	column month
+		dataType: string
+		lineageTag: 3fd35f41-7ab8-4d96-bfca-a31457492497
+		summarizeBy: none
+		sourceColumn: month
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_deaths
+		dataType: double
+		lineageTag: 167864c0-c954-4cc3-a49f-ca08212de79e
+		summarizeBy: sum
+		sourceColumn: total_deaths
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column percent_complete
+		dataType: double
+		lineageTag: 647f6641-3cfe-497f-ac74-4e7f54bc39b9
+		summarizeBy: sum
+		sourceColumn: percent_complete
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition national_trend = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\Mitch\Documents\fentanyl-odd-v2\data\processed\national_trend.csv"),[Delimiter=",", Columns=5, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"month_date", type date}, {"year", Int64.Type}, {"month", type text}, {"total_deaths", type number}, {"percent_complete", type number}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

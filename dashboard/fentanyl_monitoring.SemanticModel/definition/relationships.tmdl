@@ -1,0 +1,16 @@
+relationship a38859a6-6344-20a1-2876-fde171374d37
+	fromColumn: national_trend.month_date
+	toColumn: DateTable.Date
+
+relationship 386faf12-a5c0-ad89-dfea-1f0c6376d3ee
+	fromColumn: regional_trend.month_date
+	toColumn: DateTable.Date
+
+relationship c77e825d-ca94-b516-843a-152ad346fe4e
+	fromColumn: state_monthly.month_date
+	toColumn: DateTable.Date
+
+relationship b4f2d46e-cb6d-6828-fe61-c7351bcf1b22
+	fromColumn: state_outliers.month_date
+	toColumn: DateTable.Date
+

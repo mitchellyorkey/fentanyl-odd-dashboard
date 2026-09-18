@@ -1,0 +1,88 @@
+table regional_trend
+	lineageTag: 104c0df6-0668-4371-b43a-47d08142612b
+
+	measure 'Regional Chart Title' = "Regional Trend - 12-Month Rolling Total Deaths, Ending " & FORMAT(CALCULATE(MAX(regional_trend[month_date]), ALL(regional_trend)), "MMMM YYYY")
+		lineageTag: 9400d8ec-6d4d-4ad1-bc70-21bdc528b4f2
+
+	measure 'Peak Regional Deaths' =
+			
+			VAR PeakDate = [Peak Month Date]
+			RETURN CALCULATE(SUM(regional_trend[total_deaths]), regional_trend[month_date] = PeakDate)
+		lineageTag: 5bdd7873-344e-4ef6-a8fa-b4486b4e30c6
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Latest Regional Deaths' =
+			
+			VAR LatestDate = CALCULATE(MAX(national_trend[month_date]), ALL(national_trend))
+			RETURN CALCULATE(SUM(regional_trend[total_deaths]), regional_trend[month_date] = LatestDate)
+		lineageTag: cf535b1d-3ab0-4d1a-98c9-dbbbdaf2dd85
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Peak Regional Title' = "Peak Regional Deaths - (" & FORMAT([Peak Month Date], "MMMM YYYY") & ")"
+		lineageTag: b5ffd1d9-e7a6-444e-85b2-285a0b880b80
+
+	measure 'Latest Regional Title' = "Latest Regional Deaths - (" & FORMAT([LatestDateValue], "MMMM YYYY") & ")"
+		lineageTag: 364622cb-e39a-4818-8f6e-edcd69a74a24
+
+	column region_name
+		dataType: string
+		lineageTag: 5e79e540-183d-4e08-878d-fed2ec2390e3
+		summarizeBy: none
+		sourceColumn: region_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column month_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 42b8fff0-52b3-4ecb-a099-73c1b658ccac
+		summarizeBy: none
+		sourceColumn: month_date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column year
+		dataType: int64
+		formatString: 0
+		lineageTag: b79b70b7-4fe9-4534-9a69-39405ebafcbe
+		summarizeBy: sum
+		sourceColumn: year
+
+		annotation SummarizationSetBy = Automatic
+
+	column month
+		dataType: string
+		lineageTag: c4626a52-54d5-482f-8907-ab4468726b5e
+		summarizeBy: none
+		sourceColumn: month
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_deaths
+		dataType: double
+		lineageTag: 7ec53514-7ff8-4655-b341-2732a4cdedda
+		summarizeBy: sum
+		sourceColumn: total_deaths
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition regional_trend = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\Mitch\Documents\fentanyl-odd-v2\data\processed\regional_trend.csv"),[Delimiter=",", Columns=5, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"region_name", type text}, {"month_date", type date}, {"year", Int64.Type}, {"month", type text}, {"total_deaths", type number}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

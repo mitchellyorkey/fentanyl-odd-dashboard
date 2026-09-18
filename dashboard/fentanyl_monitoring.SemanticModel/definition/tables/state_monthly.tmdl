@@ -1,0 +1,135 @@
+table state_monthly
+	lineageTag: 82d49387-dad9-4cdd-bd0e-73075b7216f5
+
+	measure 'Latest Deaths Per 100k' = ```
+			
+			   VAR LatestDate = CALCULATE(MAX(state_monthly[month_date]), ALL(state_monthly[month_date]))
+			   RETURN
+			   CALCULATE(SUM(state_monthly[deaths_per_100k]), state_monthly[month_date] = LatestDate)
+			```
+		lineageTag: 746df89d-b2a7-4d4e-a6c0-42bb13996c70
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Map Title' = "State Level - Deaths Per 100k Population - " & FORMAT(CALCULATE(MAX(state_monthly[month_date]),ALL(state_monthly)), "MMMM YYYY") & " - 12-Month Rolling Totals"
+		lineageTag: 7fe2bba8-1b51-4b7c-aaf1-df9f16e52b6c
+
+	column month_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: f22aff47-53a9-45db-89af-cb9f7942076d
+		summarizeBy: none
+		sourceColumn: month_date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column year
+		dataType: int64
+		formatString: 0
+		lineageTag: 964883fc-fe94-4f12-b6ea-791659562e27
+		summarizeBy: sum
+		sourceColumn: year
+
+		annotation SummarizationSetBy = Automatic
+
+	column month
+		dataType: string
+		lineageTag: 777f4ec7-657e-4cfe-a2d3-aa2f4a6f8814
+		summarizeBy: none
+		sourceColumn: month
+
+		annotation SummarizationSetBy = Automatic
+
+	column state_name
+		dataType: string
+		lineageTag: 37474c99-a84f-425e-b9cf-0256fdd879e5
+		dataCategory: StateOrProvince
+		summarizeBy: none
+		sourceColumn: state_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column deaths
+		dataType: double
+		lineageTag: 8d7e40a6-1fe9-416d-9a3c-7f096344267d
+		summarizeBy: sum
+		sourceColumn: deaths
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column deaths_imputed
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 4ea14cb8-a6af-435b-a09b-e1f30a59ce47
+		summarizeBy: none
+		sourceColumn: deaths_imputed
+
+		annotation SummarizationSetBy = Automatic
+
+	column population
+		dataType: double
+		lineageTag: 6a59b958-04a4-495b-8a98-3090842abe56
+		summarizeBy: sum
+		sourceColumn: population
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column population_imputed
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 4d49518b-7cfa-4974-8883-9ab7390db524
+		summarizeBy: none
+		sourceColumn: population_imputed
+
+		annotation SummarizationSetBy = Automatic
+
+	column deaths_per_100k
+		dataType: double
+		lineageTag: a1018d0c-ec8a-48cc-9e29-c10891d17829
+		summarizeBy: sum
+		sourceColumn: deaths_per_100k
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column trailing_avg
+		dataType: double
+		lineageTag: 548bbf2c-2a3c-4dd5-a785-25b17bdbe6fd
+		summarizeBy: sum
+		sourceColumn: trailing_avg
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column trailing_stddev
+		dataType: double
+		lineageTag: 3ba11191-cec7-4325-9b54-1befff235fb6
+		summarizeBy: sum
+		sourceColumn: trailing_stddev
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition state_monthly = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\Mitch\Documents\fentanyl-odd-v2\data\processed\state_monthly.csv"),[Delimiter=",", Columns=11, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"state_name", type text}, {"month_date", type date}, {"year", Int64.Type}, {"month", type text}, {"deaths", type number}, {"deaths_imputed", type logical}, {"population", type number}, {"population_imputed", type logical}, {"deaths_per_100k", type number}, {"trailing_avg", type number}, {"trailing_stddev", type number}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

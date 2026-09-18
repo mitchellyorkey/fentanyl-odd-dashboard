@@ -1,0 +1,110 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "d286ae6e915b1e8ab68e",
+  "position": {
+    "x": 927.14285714285722,
+    "y": 5.7142857142857144,
+    "z": 1000,
+    "height": 65.714285714285722,
+    "width": 205.71428571428572,
+    "tabOrder": 1000
+  },
+  "visual": {
+    "visualType": "cardVisual",
+    "query": {
+      "queryState": {
+        "Data": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "national_trend"
+                    }
+                  },
+                  "Property": "Peak Total"
+                }
+              },
+              "queryRef": "national_trend.Peak Total",
+              "nativeQueryRef": "Peak 12-mo Total",
+              "displayName": "Peak 12-mo Total"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "national_trend"
+                  }
+                },
+                "Property": "Peak Total"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "''"
+                }
+              }
+            },
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "visualHeader": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "82da3b4f360466b30980",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "national_trend"
+              }
+            },
+            "Property": "Peak Total"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}
